@@ -9,8 +9,8 @@ function routes(app) {
   });
 
   app.get('/search/:searchTerm', (req, res) => {
-    searchTweet(req.params.searchTerm, () =>
-      res.status(200).send('search ' + req.params.searchTerm)
+    searchTweet(req.params.searchTerm, data =>
+      res.status(200).send({id:data.id, text:data.text, user: data.user.screen_name})
     );
   });
 
@@ -39,12 +39,13 @@ function searchTweet(query, callback) {
         //retweet(id);
         //fav(id)
         //post(text.status);
+        callback(data.statuses[0]);
+
       }
     } else {
       console.log(err);
     }
   });  
-  callback();
 }
 
 function retweetTweet(query, callback) {
