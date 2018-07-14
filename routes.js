@@ -28,6 +28,8 @@ function searchTweet(query, callback) {
     // If there is no error, proceed
     console.log('FETCHING  FOR : ', query);
     if (!err) {
+      console.log('bi seyler geldi')
+      console.log(data)
       // Loop through the returned tweets
       for (let j = 0; j < data.statuses.length; j++) {
         // Get the tweet Id from the returned data
