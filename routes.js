@@ -10,13 +10,14 @@ function routes(app) {
 
   app.get('/search/:searchTerm', (req, res) => {
     searchTweet(req.params.searchTerm, data =>
-      res.status(200).send({id:data.id, text:data.text, user: data.user.screen_name})
+      res.status(200).send({id:data.id_str, text:data.text, user: data.user.screen_name})
     );
   });
 
-  app.get('/retweet/:retweetTerm', (req, res) => {
-    retweetTweet(req.params.retweetTerm, () =>
-      res.status(200).send('retweeted ' + req.params.retweetTerm)
+  app.get('/retweet/:tweetId', (req, res) => {
+    console.log(req.params.tweetId)
+    retweet(req.params.tweetId, () =>
+      res.status(200).send('retweeted ' + req.params.tweetId)
     );
   });
 }
@@ -33,8 +34,6 @@ function searchTweet(query, callback) {
       // Loop through the returned tweets
       for (let j = 0; j < data.statuses.length; j++) {
         // Get the tweet Id from the returned data
-        let id = { id: data.statuses[j].id_str };
-        let text = { status: data.statuses[j].text };
         console.log('RESULTS FOR : ', query);
         console.log(j, text.status);
 
@@ -50,32 +49,10 @@ function searchTweet(query, callback) {
   });  
 }
 
-function retweetTweet(query, callback) {
-T.get('search/tweets', {q: '#'+query, count:1}, function(err, data, response) {
-  // If there is no error, proceed
-  console.log('FETCHING  FOR : ', query);
-  if (!err) {
-    // Loop through the returned tweets
-    for (let j = 0; j < data.statuses.length; j++) {
-      // Get the tweet Id from the returned data
-      let id = { id: data.statuses[j].id_str };
-      let text = { status: data.statuses[j].text };
-      console.log('RESULTS FOR : ', query);
-      console.log(j, text.status);
-
-      retweet(id);
-      //fav(id)
-      //post(text.status);
-    }
-  } else {
-    console.log(err);
-  }
-});  
-callback();
-}
-
+//TODO: DUZELT BUNU
 function retweet(id) {
-T.post('statuses/retweet', { id: id.id }, function(err, resp) {
+T.post('statuses/retweet', { id: id }, function(err, resp) {
+  console.log('trying to retweet', id)
   if (err) {
     console.log(err);
   } else {
