@@ -35,7 +35,6 @@ function searchTweet(query, callback) {
       for (let j = 0; j < data.statuses.length; j++) {
         // Get the tweet Id from the returned data
         console.log('RESULTS FOR : ', query);
-        console.log(j, text.status);
 
         //retweet(id);
         //fav(id)
