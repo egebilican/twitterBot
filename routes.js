@@ -14,14 +14,19 @@ function routes(app) {
     );
   });
 
-  app.get('/retweet/:tweetId', (req, res) => {
-    console.log(req.params.tweetId)
-    retweet(req.params.tweetId, () =>
-      res.status(200).send('retweeted ' + req.params.tweetId)
-    );
-  });
-}
-
+  app.post('/retweet/', (req, res) => {
+    console.log(req.body);
+    T.post('statuses/retweet', { id: req.body.id }, function(err) {
+      console.log('trying to retweet', req.body.id)
+      if(err) {
+        res.status(405).send(err)
+        console.log(err)
+      }
+      else {res.status(200).send('retweeted ' + req.body.id)
+      console.log('retweeted', id)} }  
+      ) 
+    });
+  }
 
 
 function searchTweet(query, callback) {
@@ -48,15 +53,10 @@ function searchTweet(query, callback) {
   });  
 }
 
-//TODO: DUZELT BUNU
-function retweet(id) {
+function retweet(id, callback) {
 T.post('statuses/retweet', { id: id }, function(err, resp) {
   console.log('trying to retweet', id)
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('retweeted', id);
-  }
+  callback(err)
 });
 }
 
