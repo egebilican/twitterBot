@@ -53,13 +53,6 @@ function searchTweet(query, callback) {
   });  
 }
 
-function retweet(id, callback) {
-T.post('statuses/retweet', { id: id }, function(err, resp) {
-  console.log('trying to retweet', id)
-  callback(err)
-});
-}
-
 function fav(id) {
 T.post('favorites/create', id, function(err, response) {
   // If the favorite fails, log the error message
